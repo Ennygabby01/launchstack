@@ -4,6 +4,14 @@ All notable changes to LaunchStack are documented here.
 
 ---
 
+## [1.1.3] - 2026-03-14
+
+### Fixed
+- AI mode no longer overrides the project type selected by the user — if you pick Backend, the AI will never suggest a fullstack or frontend configuration
+- AI prompt now explicitly instructs the model to respect the user's chosen project type
+
+---
+
 ## [1.1.2] - 2026-03-14
 
 ### Fixed
