@@ -4,6 +4,26 @@ All notable changes to LaunchStack are documented here.
 
 ---
 
+## [1.1.6] - 2026-03-14
+
+### Fixed
+- **NestJS**: added missing `tsconfig.json` with `emitDecoratorMetadata` and `experimentalDecorators` — NestJS decorators now compile correctly
+- **NestJS**: replaced `nest build` / `nest start --watch` scripts with `tsc` / `nodemon --exec ts-node` — no longer requires `@nestjs/cli` to be installed
+- **NestJS**: added `dev` script alias so `npm run dev` works consistently across all frameworks
+- **NestJS**: added `nodemon` and `tsconfig-paths` to devDependencies
+
+### Added
+- 4 new modules available both during `launchstack init` and via `launchstack add`:
+  - **swagger** — auto-generated API docs via `swagger-jsdoc` + `swagger-ui-express`, JWT bearer auth pre-configured, JSDoc annotations on all routes
+  - **validation** — Zod middleware factory (`validate(schema, target)`) with example schemas for users, pagination, and password change
+  - **socket** — Socket.IO module with `initSocket(httpServer)` and `getIO()` helper, room support included
+  - **users** — full user CRUD router (list, get, update, change-password, soft-delete, set-role), service layer, `authenticate` JWT middleware, and `requireRole(...roles)` RBAC guard
+- Express and Fastify templates now handle graceful `SIGTERM` / `SIGINT` shutdown
+- Express and Fastify `/api/health` upgraded: now pings database and Redis with ORM stubs and returns structured `{ status, checks }` response (503 on failure)
+- MIT license updated with copyright: © GBT3K
+
+---
+
 ## [1.1.5] - 2026-03-14
 
 ### Improved
