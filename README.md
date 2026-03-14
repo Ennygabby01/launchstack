@@ -496,8 +496,6 @@ docker-compose up -d
 
 See [CHANGELOG.md](CHANGELOG.md) for full version history.
 
-Current version: **1.1.6**
-
 ---
 
 ## License
