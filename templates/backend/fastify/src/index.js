@@ -21,6 +21,23 @@ await fastify.register(cors);
 await fastify.register(helmet);
 await fastify.register(healthRoutes, { prefix: '/api' });
 
+// ─── Graceful shutdown ────────────────────────────────────────────────────────
+
+async function shutdown(signal) {
+  fastify.log.info(`${signal} received — shutting down gracefully`);
+  try {
+    await fastify.close();
+    fastify.log.info('Server closed');
+    process.exit(0);
+  } catch (err) {
+    fastify.log.error(err, 'Error during shutdown');
+    process.exit(1);
+  }
+}
+
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
+
 fastify.listen({ port: PORT, host: '0.0.0.0' }, (err) => {
   if (err) {
     fastify.log.error(err);

@@ -124,6 +124,10 @@ launchstack add rate-limit
 launchstack add queue
 launchstack add file-storage
 launchstack add payments
+launchstack add swagger
+launchstack add validation
+launchstack add socket
+launchstack add users
 ```
 
 Run this from inside a project created with LaunchStack (requires `launchstack.json`).
@@ -196,6 +200,10 @@ Available templates:
     redis
     queue
     payments
+    swagger
+    validation
+    socket
+    users
 
   docker/
     node
@@ -242,7 +250,7 @@ Prisma, Drizzle, Sequelize, Mongoose
 JWT, OAuth (Passport)
 
 ### Optional Modules
-Rate limiting, Logging (Winston), Email (Nodemailer), Redis (ioredis), Background Jobs (BullMQ), File Storage (AWS S3)
+Rate limiting, Logging (Winston), Email (Nodemailer), Redis (ioredis), Background Jobs (BullMQ), File Storage (AWS S3), Swagger/OpenAPI, Zod Validation, Socket.IO, User CRUD + RBAC
 
 ### Payments
 Stripe, PayPal, Paystack, Flutterwave
@@ -492,4 +500,4 @@ See [CHANGELOG.md](CHANGELOG.md) for full version history.
 
 ## License
 
-MIT
+MIT © GBT3K

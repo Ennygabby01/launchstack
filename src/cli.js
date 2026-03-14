@@ -105,7 +105,7 @@ async function cmdAdd(moduleName) {
     process.exit(1);
   }
 
-  const validModules = ['logging', 'rate-limit', 'email', 'redis', 'queue', 'file-storage', 'payments'];
+  const validModules = ['logging', 'rate-limit', 'email', 'redis', 'queue', 'file-storage', 'payments', 'swagger', 'validation', 'socket', 'users'];
 
   if (!validModules.includes(moduleName)) {
     logger.error(`Unknown module: ${moduleName}`);

@@ -61,6 +61,10 @@ export const MODULE_DEPS = {
   redis: ['ioredis'],
   queue: ['bullmq'],
   'file-storage': ['@aws-sdk/client-s3', 'multer'],
+  swagger: ['swagger-jsdoc', 'swagger-ui-express'],
+  validation: ['zod'],
+  socket: ['socket.io'],
+  users: ['jsonwebtoken', 'bcryptjs'],
 };
 
 export const PAYMENT_DEPS = {
