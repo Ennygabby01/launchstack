@@ -25,7 +25,7 @@ export const FRAMEWORK_DEPS = {
 export const FRAMEWORK_DEV_DEPS = {
   express: ['nodemon'],
   fastify: ['nodemon'],
-  nestjs: ['@nestjs/cli', '@nestjs/testing', 'typescript'],
+  nestjs: ['typescript', 'ts-node', '@types/node'],
   django: [],
   flask: [],
 };
