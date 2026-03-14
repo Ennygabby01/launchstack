@@ -1,6 +1,6 @@
 {
   "name": "launchstack",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Interactive CLI for scaffolding production-ready Node.js projects in seconds",
   "type": "module",
   "bin": {
