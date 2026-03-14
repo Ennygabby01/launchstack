@@ -253,13 +253,49 @@ To enable AI mode, you must have at least one supported AI provider available.
 
 LaunchStack supports multiple AI providers. It will automatically use the first available provider in this order:
 
-1. **Ollama** (recommended) – local AI, no API key required
-2. **GitHub Models** – requires a GitHub personal access token (free tier available)
+1. **GitHub Models** *(recommended)* – fast, free tier available, no local setup required
+2. **Ollama** – local AI, no API key required, but slower
 3. **Manual prompts** – fallback when no AI provider is available
 
-### Option 1: Install Ollama (Recommended)
+### Option 1: GitHub Models *(Recommended)*
 
-Ollama allows LaunchStack to run AI locally without any API keys.
+GitHub Models is fast and free to use with a personal access token. Tokens are scoped to your session and can be revoked anytime from GitHub — do not store them permanently in your shell profile unless you understand the risk.
+
+**Step 1 — Create a token:**
+
+Go to [github.com/settings/tokens](https://github.com/settings/tokens) → Generate new token (classic) → no special scopes required → set an expiry that suits you.
+
+**Step 2 — Set the token for your current terminal session:**
+
+This is the recommended approach — it lasts only for the session and never touches your disk:
+
+**Mac/Linux (VSCode terminal or any shell session):**
+```bash
+export GITHUB_TOKEN=your_token_here
+```
+
+Then run LaunchStack immediately in the same terminal window.
+
+**Windows (PowerShell session):**
+```powershell
+$env:GITHUB_TOKEN="your_token_here"
+```
+
+**Optional — Make it permanent (only if you trust your machine is secure):**
+
+Mac/Linux:
+```bash
+echo 'export GITHUB_TOKEN=your_token_here' >> ~/.zshrc
+source ~/.zshrc
+```
+
+Windows: Add via **System Properties → Environment Variables**.
+
+> Tokens expire. If AI mode stops working, generate a new token and re-export it.
+
+### Option 2: Ollama (Local AI)
+
+Ollama runs AI models locally with no API key. It is slower than GitHub Models and requires downloading a model (~4GB+), but works fully offline.
 
 Install Ollama:
 
@@ -280,44 +316,13 @@ curl -fsSL https://ollama.com/install.sh | sh
 
 **Windows:** Download and run the installer from [ollama.com](https://ollama.com)
 
-Start the service:
+Start the service and pull a model:
 ```bash
 ollama serve
-```
-
-Pull a model:
-```bash
 ollama run llama3
 ```
 
 After installation, LaunchStack will automatically detect Ollama during the environment check.
-
-### Option 2: Use GitHub AI Models
-
-LaunchStack can also use GitHub's AI models if you provide a personal access token.
-
-Create a token here: https://github.com/settings/tokens
-
-Then set the token in your shell:
-
-**Mac/Linux:**
-```bash
-export GITHUB_TOKEN=your_token_here
-```
-
-To make it permanent:
-```bash
-echo 'export GITHUB_TOKEN=your_token_here' >> ~/.zshrc
-```
-
-**Windows (PowerShell):**
-```powershell
-$env:GITHUB_TOKEN="your_token_here"
-```
-
-To make it permanent on Windows, add it via **System Properties → Environment Variables**.
-
-Restart your terminal and LaunchStack will detect the token automatically.
 
 > If no AI provider is detected, LaunchStack will fall back to the manual interactive prompts.
 
@@ -369,7 +374,7 @@ They are cached locally at `~/.launchstack/templates`. On each scaffold, LaunchS
 3. If offline, uses the local cache
 4. If no cache exists and the registry is unreachable, LaunchStack falls back to the bundled templates included with the CLI.
 
-Templates can be updated independently of CLI releases — no CLI update needed to get the latest template improvements.
+Templates are maintained in a [separate repository](https://github.com/Ennygabby01/launchstack-templates) and can be updated independently of CLI releases — no CLI update needed to get the latest template improvements.
 
 ```bash
 # Manually update templates
@@ -451,6 +456,12 @@ If Docker is detected, LaunchStack will offer to generate:
 ```bash
 docker-compose up -d
 ```
+
+---
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for full version history.
 
 ---
 
