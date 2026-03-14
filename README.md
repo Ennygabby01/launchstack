@@ -1,12 +1,12 @@
-# ⚡ Launchstack
+# ⚡ LaunchStack
 
 > Production-ready project scaffolding for Node.js developers.
 
-Launchstack is an interactive CLI that generates fully structured, dependency-ready projects in seconds. It detects your environment, asks the right questions (or lets AI answer them for you), and outputs a project wired with the exact stack you chose — with no pinned outdated dependencies.
+LaunchStack is an interactive CLI that generates fully structured, dependency-ready projects in seconds. It detects your environment, asks the right questions (or lets AI answer them for you), and outputs a project wired with the exact stack you chose — with no pinned outdated dependencies.
 
 ---
 
-## Why Launchstack?
+## Why LaunchStack?
 
 Starting new projects usually means:
 
@@ -16,7 +16,7 @@ Starting new projects usually means:
 - setting up Docker and environment variables
 - writing repetitive boilerplate
 
-Launchstack removes that friction by generating a production-ready project structure in seconds.
+LaunchStack removes that friction by generating a production-ready project structure in seconds.
 Instead of spending time on setup, developers can start building immediately.
 
 ---
@@ -41,7 +41,7 @@ npm install -g launchstack
 npx launchstack init my-app
 ```
 
-Launchstack will guide you through:
+LaunchStack will guide you through:
 
 1. Selecting a project type
 2. Choosing your stack (framework, database, ORM, auth, modules)
@@ -50,7 +50,7 @@ Launchstack will guide you through:
 
 ---
 
-## How Launchstack Works
+## How LaunchStack Works
 
 ```
 Developer
@@ -109,7 +109,7 @@ launchstack create cli
 
 ### `launchstack add <module>`
 
-Add a module to an existing Launchstack project.
+Add a module to an existing LaunchStack project.
 
 ```bash
 launchstack add redis
@@ -121,7 +121,7 @@ launchstack add file-storage
 launchstack add payments
 ```
 
-Run this from inside a project created with Launchstack (requires `launchstack.json`).
+Run this from inside a project created with LaunchStack (requires `launchstack.json`).
 
 ### `launchstack doctor`
 
@@ -246,13 +246,47 @@ Stripe, PayPal, Paystack, Flutterwave
 
 ## AI-Assisted Mode
 
-Launchstack can analyze your app description and suggest a full stack configuration automatically.
+LaunchStack can automatically analyze your app description and suggest a stack configuration.
+To enable AI mode, you must have at least one supported AI provider available.
 
-**Supported providers (in priority order):**
+### Enable AI Mode
 
-1. **Ollama** — local AI, no API key needed. Install from [ollama.com](https://ollama.com).
-2. **GitHub Copilot** — set `GITHUB_TOKEN` in your environment.
-3. **Manual** — fallback when no AI provider is available.
+LaunchStack supports multiple AI providers. It will automatically use the first available provider in this order:
+
+1. **Ollama** (recommended) – local AI, no API key required
+2. **GitHub AI models** – requires a GitHub personal access token
+3. **Manual prompts** – fallback when no AI provider is available
+
+### Option 1: Install Ollama (Recommended)
+
+Ollama allows LaunchStack to run AI locally without any API keys.
+
+Install Ollama:
+
+**Mac (Homebrew):**
+```bash
+brew install ollama
+```
+
+**Mac/Linux (direct):**
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+**Windows:** Download from [ollama.com](https://ollama.com)
+
+Then pull a model:
+```bash
+ollama pull llama3
+```
+
+### Option 2: GitHub AI Models
+
+Set a GitHub personal access token in your environment:
+
+```bash
+export GITHUB_TOKEN=your_token_here
+```
 
 **Example:**
 
@@ -276,14 +310,14 @@ AI suggested configuration:
 
 ## Dependency Philosophy
 
-Launchstack **never pins outdated versions**. Dependencies are always installed at their latest stable versions at the time you run the CLI:
+LaunchStack **never pins outdated versions**. Dependencies are always installed at their latest stable versions at the time you run the CLI:
 
 ```bash
-# Launchstack runs this — no version pinning
+# LaunchStack runs this — no version pinning
 npm install express prisma @prisma/client jsonwebtoken
 ```
 
-Before installation, Launchstack:
+Before installation, LaunchStack:
 
 1. Resolves the latest version of each package from the npm registry for display
 2. Runs a **freshness guard** that warns if any package hasn't been updated in over 12 months
@@ -295,12 +329,12 @@ Before installation, Launchstack:
 
 Templates are automatically synced from the remote registry at `https://github.com/launchstack/templates`.
 
-They are cached locally at `~/.launchstack/templates`. On each scaffold, Launchstack:
+They are cached locally at `~/.launchstack/templates`. On each scaffold, LaunchStack:
 
 1. Checks if a local cache exists
 2. If online, pulls the latest templates (`git pull`)
 3. If offline, uses the local cache
-4. If no cache exists and the registry is unreachable, Launchstack falls back to the bundled templates included with the CLI.
+4. If no cache exists and the registry is unreachable, LaunchStack falls back to the bundled templates included with the CLI.
 
 Templates can be updated independently of CLI releases — no CLI update needed to get the latest template improvements.
 
@@ -313,7 +347,7 @@ launchstack templates update
 
 ## launchstack.json
 
-Projects generated by Launchstack include a small metadata file used by CLI commands such as `launchstack add`.
+Projects generated by LaunchStack include a small metadata file used by CLI commands such as `launchstack add`.
 
 ```json
 {
@@ -325,7 +359,7 @@ Projects generated by Launchstack include a small metadata file used by CLI comm
 }
 ```
 
-This file allows Launchstack to understand the structure of the current project and safely apply additional modules later.
+This file allows LaunchStack to understand the structure of the current project and safely apply additional modules later.
 
 ---
 
@@ -375,7 +409,7 @@ Common variables generated based on your stack:
 
 ## Docker
 
-If Docker is detected, Launchstack will offer to generate:
+If Docker is detected, LaunchStack will offer to generate:
 
 - `Dockerfile` — multi-stage Node.js or Python build
 - `docker-compose.yml` — app + database + Redis (based on your stack)

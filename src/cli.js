@@ -15,11 +15,11 @@ import {
 } from './utils/dependencies.js';
 import { updateTemplates, listTemplates } from './templates/manager.js';
 
-const LAUNCHSTACK_VERSION = '1.0.0';
+const LAUNCHSTACK_VERSION = '1.0.1';
 
 function printBanner() {
   console.log('');
-  console.log(chalk.bold.cyan('  ⚡ Launchstack'));
+  console.log(chalk.bold.cyan('  ⚡ LaunchStack'));
   console.log(chalk.dim('  Production-ready project scaffolding'));
   console.log('');
 }
@@ -28,7 +28,7 @@ function printBanner() {
 
 async function cmdInit(name, options) {
   printBanner();
-  logger.header('Welcome to Launchstack');
+  logger.header('Welcome to LaunchStack');
   logger.blank();
 
   const env = await detectEnvironment();
@@ -133,7 +133,7 @@ function getAllTemplateDeps() {
 
 async function cmdDoctor() {
   printBanner();
-  logger.header('Launchstack Doctor');
+  logger.header('LaunchStack Doctor');
 
   // ── Environment check ──────────────────────────────────────────────────────
   const env = await detectEnvironment();
