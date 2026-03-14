@@ -263,30 +263,42 @@ Ollama allows LaunchStack to run AI locally without any API keys.
 
 Install Ollama:
 
-**Mac (Homebrew):**
+Mac (Homebrew):
 ```bash
 brew install ollama
 ```
 
-**Mac/Linux (direct):**
+Start the service:
 ```bash
-curl -fsSL https://ollama.com/install.sh | sh
+ollama serve
 ```
 
-**Windows:** Download from [ollama.com](https://ollama.com)
-
-Then pull a model:
+Pull a model:
 ```bash
-ollama pull llama3
+ollama run llama3
 ```
 
-### Option 2: GitHub AI Models
+After installation, LaunchStack will automatically detect Ollama during the environment check.
 
-Set a GitHub personal access token in your environment:
+### Option 2: Use GitHub AI Models
 
+LaunchStack can also use GitHub's AI models if you provide a personal access token.
+
+Create a token here: https://github.com/settings/tokens
+
+Then set the token in your shell:
 ```bash
 export GITHUB_TOKEN=your_token_here
 ```
+
+To make it permanent:
+```bash
+echo 'export GITHUB_TOKEN=your_token_here' >> ~/.zshrc
+```
+
+Restart your terminal and LaunchStack will detect the token automatically.
+
+> If no AI provider is detected, LaunchStack will fall back to the manual interactive prompts.
 
 **Example:**
 
