@@ -72,6 +72,10 @@ async function askModules() {
       { name: 'Redis caching', value: 'redis' },
       { name: 'Background jobs', value: 'queue' },
       { name: 'File storage', value: 'file-storage' },
+      { name: 'Swagger / OpenAPI docs', value: 'swagger' },
+      { name: 'Zod validation', value: 'validation' },
+      { name: 'Socket.IO (real-time)', value: 'socket' },
+      { name: 'User CRUD + RBAC', value: 'users' },
     ],
   });
 }
