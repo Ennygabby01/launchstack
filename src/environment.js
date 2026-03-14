@@ -7,7 +7,11 @@ const TOOLS = [
   { key: 'git', cmd: 'git', args: ['--version'] },
   { key: 'docker', cmd: 'docker', args: ['--version'] },
   { key: 'redis', cmd: 'redis-server', args: ['--version'] },
-  { key: 'ollama', cmd: 'ollama', args: ['--version'] },
+  { key: 'ollama', cmd: 'ollama', args: ['--version'], fallbackPaths: [
+    '/opt/local/bin/ollama',       // MacPorts
+    '/opt/homebrew/bin/ollama',    // Homebrew (Apple Silicon)
+    '/usr/local/bin/ollama',       // Homebrew (Intel) / manual install
+  ]},
 ];
 
 async function checkTool(tool) {
@@ -15,6 +19,16 @@ async function checkTool(tool) {
     await execa(tool.cmd, tool.args, { reject: true });
     return true;
   } catch {
+    if (tool.fallbackPaths) {
+      for (const fullPath of tool.fallbackPaths) {
+        try {
+          await execa(fullPath, tool.args, { reject: true });
+          return true;
+        } catch {
+          // try next
+        }
+      }
+    }
     return false;
   }
 }

@@ -254,7 +254,7 @@ To enable AI mode, you must have at least one supported AI provider available.
 LaunchStack supports multiple AI providers. It will automatically use the first available provider in this order:
 
 1. **Ollama** (recommended) – local AI, no API key required
-2. **GitHub AI models** – requires a GitHub personal access token
+2. **GitHub Models** – requires a GitHub personal access token (free tier available)
 3. **Manual prompts** – fallback when no AI provider is available
 
 ### Option 1: Install Ollama (Recommended)
@@ -266,6 +266,11 @@ Install Ollama:
 **Mac (Homebrew):**
 ```bash
 brew install ollama
+```
+
+**Mac (MacPorts):**
+```bash
+sudo port install ollama
 ```
 
 **Linux:**

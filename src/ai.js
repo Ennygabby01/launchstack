@@ -35,12 +35,11 @@ async function queryGitHubCopilot(description) {
 
   const prompt = AI_PROMPT_TEMPLATE(description);
 
-  const response = await fetch('https://api.githubcopilot.com/chat/completions', {
+  const response = await fetch('https://models.inference.ai.azure.com/chat/completions', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
-      'Copilot-Integration-Id': 'vscode-chat',
     },
     body: JSON.stringify({
       model: 'gpt-4o',
@@ -49,7 +48,10 @@ async function queryGitHubCopilot(description) {
     }),
   });
 
-  if (!response.ok) throw new Error(`GitHub Copilot API error: ${response.status}`);
+  if (!response.ok) {
+    const body = await response.text().catch(() => '');
+    throw new Error(`GitHub Models API error: ${response.status}${body ? ` — ${body}` : ''}`);
+  }
 
   const data = await response.json();
   return data.choices?.[0]?.message?.content || '';
