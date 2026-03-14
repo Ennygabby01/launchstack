@@ -328,13 +328,15 @@ function buildManifest(config) {
 
 export async function generate(config) {
   const projectPath = path.join(process.cwd(), config.projectName);
+
+  // Ensure templates are available before starting the main spinner
+  // (ensureTemplates has its own spinner — avoid concurrent spinners)
+  const templatesDir = await ensureTemplates();
+  setTemplatesDir(templatesDir);
+
   const spinner = ora(`Creating project: ${config.projectName}`).start();
 
   try {
-    // Ensure templates are available (remote or bundled fallback)
-    const templatesDir = await ensureTemplates();
-    setTemplatesDir(templatesDir);
-
     await fs.ensureDir(projectPath);
 
     const TEMPLATES_DIR = getTemplatesDir();

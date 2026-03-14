@@ -15,7 +15,7 @@ import {
 } from './utils/dependencies.js';
 import { updateTemplates, listTemplates } from './templates/manager.js';
 
-const LAUNCHSTACK_VERSION = '1.1.3';
+const LAUNCHSTACK_VERSION = '1.1.4';
 
 function printBanner() {
   console.log('');

@@ -4,6 +4,13 @@ All notable changes to LaunchStack are documented here.
 
 ---
 
+## [1.1.4] - 2026-03-14
+
+### Fixed
+- Eliminated duplicate concurrent spinner warning (`[ora] Multiple concurrent spinners detected`) — template download spinner and project creation spinner no longer run at the same time
+
+---
+
 ## [1.1.3] - 2026-03-14
 
 ### Fixed
