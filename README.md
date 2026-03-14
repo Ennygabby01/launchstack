@@ -1,5 +1,10 @@
 # ⚡ LaunchStack
 
+[![npm version](https://img.shields.io/npm/v/launchstack?color=CB3837&logo=npm&logoColor=white)](https://www.npmjs.com/package/launchstack)
+[![Node.js](https://img.shields.io/badge/Node.js-20+-339933?logo=node.js&logoColor=white)](https://nodejs.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/Ennygabby01/launchstack?style=flat&logo=github)](https://github.com/Ennygabby01/launchstack)
+
 > Production-ready project scaffolding for Node.js developers.
 
 LaunchStack is an interactive CLI that generates fully structured, dependency-ready projects in seconds. It detects your environment, asks the right questions (or lets AI answer them for you), and outputs a project wired with the exact stack you chose — with no pinned outdated dependencies.
