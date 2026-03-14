@@ -4,7 +4,7 @@
   "description": "Interactive CLI for scaffolding production-ready Node.js projects in seconds",
   "type": "module",
   "bin": {
-    "launchstack": "./bin/launchstack.js"
+    "launchstack": "bin/launchstack.js"
   },
   "main": "./src/cli.js",
   "files": [
@@ -41,7 +41,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Ennygabby01/launchstack"
+    "url": "git+https://github.com/Ennygabby01/launchstack.git"
   },
   "homepage": "https://github.com/Ennygabby01/launchstack#readme",
   "license": "MIT"
