@@ -26,11 +26,21 @@ function resolveTemplatePath(config) {
 // ─── Generate .env.example ────────────────────────────────────────────────────
 
 function buildEnvExample(config) {
-  const lines = ['# Environment Variables', '# Copy to .env and fill in your values', ''];
+  const lines = ['# Environment Variables', '# Copy this file to .env and update the values', ''];
 
-  lines.push('NODE_ENV=development');
-  lines.push('PORT=3000');
-  lines.push('');
+  const isPython = ['django', 'flask'].includes(config.backendFramework);
+
+  if (isPython) {
+    lines.push('# Django');
+    lines.push('SECRET_KEY=change-me-in-production');
+    lines.push('DEBUG=True');
+    lines.push('ALLOWED_HOSTS=localhost,127.0.0.1');
+    lines.push('');
+  } else {
+    lines.push('NODE_ENV=development');
+    lines.push('PORT=3000');
+    lines.push('');
+  }
 
   if (config.database && config.database !== 'none') {
     const dbUrls = {
@@ -39,17 +49,23 @@ function buildEnvExample(config) {
       mongodb: 'DATABASE_URL=mongodb://localhost:27017/dbname',
       sqlite: 'DATABASE_URL=file:./dev.db',
     };
+    lines.push('# Database');
     lines.push(dbUrls[config.database] || 'DATABASE_URL=');
+    if (config.database === 'postgresql' && config.orm === 'prisma') {
+      lines.push('SHADOW_DATABASE_URL=postgresql://user:password@localhost:5432/shadow_db');
+    }
     lines.push('');
   }
 
   if (config.auth === 'jwt') {
+    lines.push('# Authentication');
     lines.push('JWT_SECRET=your-secret-key-here');
     lines.push('JWT_EXPIRES_IN=7d');
     lines.push('');
   }
 
   if (config.auth === 'oauth') {
+    lines.push('# OAuth');
     lines.push('OAUTH_CLIENT_ID=');
     lines.push('OAUTH_CLIENT_SECRET=');
     lines.push('OAUTH_CALLBACK_URL=http://localhost:3000/auth/callback');
@@ -57,11 +73,14 @@ function buildEnvExample(config) {
   }
 
   if (config.modules?.includes('redis') || config.modules?.includes('queue')) {
+    lines.push('# Redis');
     lines.push('REDIS_URL=redis://localhost:6379');
+    lines.push('REDIS_PASSWORD=');
     lines.push('');
   }
 
   if (config.modules?.includes('email')) {
+    lines.push('# Email');
     lines.push('SMTP_HOST=smtp.example.com');
     lines.push('SMTP_PORT=587');
     lines.push('SMTP_USER=');
@@ -71,6 +90,7 @@ function buildEnvExample(config) {
   }
 
   if (config.modules?.includes('file-storage')) {
+    lines.push('# File Storage');
     lines.push('STORAGE_BUCKET=');
     lines.push('STORAGE_REGION=');
     lines.push('STORAGE_ACCESS_KEY=');
@@ -78,11 +98,25 @@ function buildEnvExample(config) {
     lines.push('');
   }
 
+  if (config.modules?.includes('logging')) {
+    lines.push('# Logging');
+    lines.push('LOG_LEVEL=info');
+    lines.push('');
+  }
+
   const paymentVars = {
-    stripe: ['STRIPE_SECRET_KEY=sk_test_...', 'STRIPE_WEBHOOK_SECRET=whsec_...'],
-    paypal: ['PAYPAL_CLIENT_ID=', 'PAYPAL_CLIENT_SECRET='],
-    paystack: ['PAYSTACK_SECRET_KEY=sk_test_...'],
-    flutterwave: ['FLUTTERWAVE_SECRET_KEY=FLWSECK_TEST-...'],
+    stripe: [
+      '# Stripe Payments',
+      'STRIPE_SECRET_KEY=sk_test_...',
+      'STRIPE_WEBHOOK_SECRET=whsec_...',
+      '',
+      '# Stripe Product IDs',
+      'STRIPE_PRICE_BASIC=',
+      'STRIPE_PRICE_PRO=',
+    ],
+    paypal: ['# PayPal', 'PAYPAL_CLIENT_ID=', 'PAYPAL_CLIENT_SECRET='],
+    paystack: ['# Paystack', 'PAYSTACK_SECRET_KEY=sk_test_...'],
+    flutterwave: ['# Flutterwave', 'FLUTTERWAVE_SECRET_KEY=FLWSECK_TEST-...'],
   };
 
   if (config.payments && config.payments !== 'none' && paymentVars[config.payments]) {
@@ -130,15 +164,26 @@ function buildReadme(config) {
   lines.push('');
   lines.push('## Getting Started');
   lines.push('');
+
+  const isPython = ['django', 'flask'].includes(config.backendFramework);
+
   lines.push('```bash');
-  lines.push('# Install dependencies');
-  lines.push('npm install');
-  lines.push('');
-  lines.push('# Copy environment variables');
   lines.push('cp .env.example .env');
-  lines.push('');
-  lines.push('# Start development server');
-  lines.push('npm run dev');
+  if (isPython) {
+    lines.push('python -m venv venv');
+    lines.push('source venv/bin/activate  # Windows: venv\\Scripts\\activate');
+    lines.push('pip install -r requirements.txt');
+    lines.push('python manage.py migrate');
+    lines.push('python manage.py runserver');
+  } else {
+    const devCmd =
+      config.backendFramework === 'nestjs' ? 'npm run start:dev' : 'npm run dev';
+    lines.push('npm install');
+    if (config.orm === 'prisma') {
+      lines.push('npx prisma generate');
+    }
+    lines.push(devCmd);
+  }
   lines.push('```');
   lines.push('');
 
@@ -260,6 +305,34 @@ function buildDockerCompose(config) {
   return lines.join('\n');
 }
 
+// ─── Generate prisma/schema.prisma ────────────────────────────────────────────
+
+function buildPrismaSchema(config) {
+  const provider =
+    config.database === 'mysql'
+      ? 'mysql'
+      : config.database === 'sqlite'
+        ? 'sqlite'
+        : 'postgresql';
+
+  return [
+    'generator client {',
+    '  provider = "prisma-client-js"',
+    '}',
+    '',
+    'datasource db {',
+    `  provider = "${provider}"`,
+    '  url      = env("DATABASE_URL")',
+    '}',
+    '',
+    'model User {',
+    '  id        String   @id @default(uuid())',
+    '  email     String   @unique',
+    '  createdAt DateTime @default(now())',
+    '}',
+  ].join('\n');
+}
+
 // ─── Generate .gitignore ──────────────────────────────────────────────────────
 
 function buildGitignore(config) {
@@ -369,6 +442,10 @@ export async function generate(config) {
     await writeFile(path.join(projectPath, 'README.md'), buildReadme(config));
     await writeFile(path.join(projectPath, '.gitignore'), buildGitignore(config));
     await writeFile(path.join(projectPath, 'launchstack.json'), buildManifest(config));
+
+    if (config.orm === 'prisma') {
+      await writeFile(path.join(projectPath, 'prisma', 'schema.prisma'), buildPrismaSchema(config));
+    }
 
     if (config.docker) {
       spinner.text = 'Generating Docker files...';

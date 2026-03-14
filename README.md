@@ -370,7 +370,7 @@ Before installation, LaunchStack:
 
 ## Template System
 
-Templates are automatically synced from the remote registry at `https://github.com/launchstack/templates`.
+Templates are automatically synced from the remote registry at `https://github.com/Ennygabby01/launchstack-templates`.
 
 They are cached locally at `~/.launchstack/templates`. On each scaffold, LaunchStack:
 
@@ -408,24 +408,40 @@ This file allows LaunchStack to understand the structure of the current project 
 
 ## Example Generated Backend Project
 
+**Express / Fastify:**
 ```
 my-api/
   src/
-    controllers/
+    config/        ← env validation + config export
     routes/
-    services/
+      v1/          ← versioned API routes
     middleware/
-    utils/
-    config/
-  tests/
+  nodemon.json
   .env.example
-  Dockerfile
-  docker-compose.yml
   launchstack.json
   README.md
 ```
 
-The exact structure depends on the selected stack (framework, modules, and Docker configuration).
+**NestJS:**
+```
+my-api/
+  src/
+    config/        ← typed config factory
+    common/
+      guards/      ← auth guards placeholder
+    modules/
+      redis/       ← redis.module.ts + redis.service.ts
+      queue/       ← queue.module.ts + queue.service.ts
+      logging/     ← logging.module.ts + logger.service.ts
+      rate-limit/  ← rate-limit.module.ts + rate-limit.middleware.ts
+  prisma/
+    schema.prisma  ← generated when Prisma is selected
+  .env.example
+  launchstack.json
+  README.md
+```
+
+The exact structure depends on the selected framework, modules, and Docker configuration.
 
 ---
 
@@ -442,11 +458,15 @@ Common variables generated based on your stack:
 | Variable | When generated |
 |---|---|
 | `DATABASE_URL` | Any database selected |
+| `SHADOW_DATABASE_URL` | PostgreSQL + Prisma |
 | `JWT_SECRET` | JWT auth |
-| `REDIS_URL` | Redis or queue modules |
-| `STRIPE_SECRET_KEY` | Stripe payments |
+| `REDIS_URL` / `REDIS_PASSWORD` | Redis or queue modules |
+| `LOG_LEVEL` | Logging module |
+| `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET` | Stripe payments |
+| `STRIPE_PRICE_BASIC` / `STRIPE_PRICE_PRO` | Stripe payments |
 | `SMTP_HOST` / `SMTP_USER` | Email module |
 | `STORAGE_BUCKET` | File storage module |
+| `SECRET_KEY` / `DEBUG` / `ALLOWED_HOSTS` | Django projects |
 
 ---
 

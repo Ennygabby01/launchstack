@@ -4,14 +4,14 @@ WORKDIR /app
 
 # Install dependencies
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 
 # Copy source
 COPY . .
 
 EXPOSE 3000
 
-CMD ["node", "src/index.js"]
+CMD ["npm", "start"]
 
 # ─── Development stage ────────────────────────────────────────────────────────
 FROM base AS dev

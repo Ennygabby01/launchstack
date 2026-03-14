@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import { config } from './config/env.js';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -6,7 +6,7 @@ import { router } from './routes/index.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = config.port;
 
 app.use(helmet());
 app.use(cors());

@@ -1,11 +1,21 @@
-import 'dotenv/config';
+import { config } from './config/env.js';
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import { healthRoutes } from './routes/health.js';
 
 const fastify = Fastify({ logger: true });
-const PORT = Number(process.env.PORT) || 3000;
+const PORT = config.port;
+
+fastify.setErrorHandler((error, _request, reply) => {
+  fastify.log.error(error);
+  reply.status(error.statusCode || 500).send({
+    error: {
+      message: error.message || 'Internal Server Error',
+      status: error.statusCode || 500,
+    },
+  });
+});
 
 await fastify.register(cors);
 await fastify.register(helmet);
