@@ -1,0 +1,48 @@
+{
+  "name": "launchstack",
+  "version": "1.0.0",
+  "description": "Interactive CLI for scaffolding production-ready Node.js projects in seconds",
+  "type": "module",
+  "bin": {
+    "launchstack": "./bin/launchstack.js"
+  },
+  "main": "./src/cli.js",
+  "files": [
+    "bin/",
+    "src/",
+    "templates/"
+  ],
+  "scripts": {
+    "start": "node bin/launchstack.js"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^8.3.0",
+    "chalk": "^5.6.2",
+    "commander": "^14.0.3",
+    "execa": "^9.5.2",
+    "fs-extra": "^11.3.4",
+    "ora": "^9.3.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "keywords": [
+    "scaffold",
+    "cli",
+    "generator",
+    "boilerplate",
+    "project-generator",
+    "nodejs",
+    "starter",
+    "template",
+    "express",
+    "prisma",
+    "fullstack"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ennygabby01/launchstack"
+  },
+  "homepage": "https://github.com/Ennygabby01/launchstack#readme",
+  "license": "MIT"
+}
