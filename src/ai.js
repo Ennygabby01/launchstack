@@ -3,14 +3,14 @@ import { input, confirm } from '@inquirer/prompts';
 import ora from 'ora';
 import { logger } from './utils/logger.js';
 
-const AI_PROMPT_TEMPLATE = (description) => `
+const AI_PROMPT_TEMPLATE = (description, projectType) => `
 You are a software architecture assistant. Based on the following app description, return ONLY a valid JSON object with no extra text, markdown, or explanation.
 
 App description: "${description}"
+Project type (already chosen by the user, do not change): "${projectType}"
 
 Return this exact JSON structure (fill in appropriate values):
 {
-  "projectType": "backend|frontend|fullstack",
   "backendFramework": "express|fastify|nestjs|django|flask|none",
   "frontendFramework": "next|react-vite|vue|svelte|alpine|static|none",
   "database": "postgresql|mysql|mongodb|sqlite|none",
@@ -20,20 +20,24 @@ Return this exact JSON structure (fill in appropriate values):
   "payments": "stripe|paypal|paystack|flutterwave|none"
 }
 
-Only include relevant modules in the array. Return ONLY the JSON.
+Rules:
+- If project type is "backend", set frontendFramework to "none"
+- If project type is "frontend", set backendFramework to "none"
+- Only include relevant modules in the array
+- Return ONLY the JSON
 `.trim();
 
-async function queryOllama(description) {
-  const prompt = AI_PROMPT_TEMPLATE(description);
+async function queryOllama(description, projectType) {
+  const prompt = AI_PROMPT_TEMPLATE(description, projectType);
   const { stdout } = await execa('ollama', ['run', 'llama3', prompt]);
   return stdout;
 }
 
-async function queryGitHubCopilot(description) {
+async function queryGitHubCopilot(description, projectType) {
   const token = process.env.GITHUB_TOKEN;
   if (!token) throw new Error('GITHUB_TOKEN not set');
 
-  const prompt = AI_PROMPT_TEMPLATE(description);
+  const prompt = AI_PROMPT_TEMPLATE(description, projectType);
 
   const response = await fetch('https://models.inference.ai.azure.com/chat/completions', {
     method: 'POST',
@@ -63,7 +67,7 @@ function parseAIResponse(raw) {
   return JSON.parse(jsonMatch[0]);
 }
 
-export async function runAIMode(env) {
+export async function runAIMode(env, projectType) {
   const description = await input({
     message: 'Describe your app in one sentence:',
     validate: (v) => v.trim().length > 0 || 'Please enter a description',
@@ -76,10 +80,10 @@ export async function runAIMode(env) {
 
     if (env.ollama) {
       spinner.text = 'Using Ollama (local AI)...';
-      raw = await queryOllama(description);
+      raw = await queryOllama(description, projectType);
     } else if (process.env.GITHUB_TOKEN) {
-      spinner.text = 'Using GitHub Copilot...';
-      raw = await queryGitHubCopilot(description);
+      spinner.text = 'Using GitHub Models...';
+      raw = await queryGitHubCopilot(description, projectType);
     } else {
       spinner.fail('No AI provider available (Ollama not found, GITHUB_TOKEN not set)');
       return null;

@@ -277,11 +277,17 @@ export async function runPrompts(env) {
   let config = { projectType, projectName };
 
   if (useAI) {
-    const aiConfig = await runAIMode(env);
+    const aiConfig = await runAIMode(env, projectType);
     if (aiConfig) {
+      // User's project type always wins — AI cannot override it
+      if (projectType === 'backend') {
+        delete aiConfig.frontendFramework;
+      } else if (projectType === 'frontend') {
+        delete aiConfig.backendFramework;
+      }
       Object.assign(config, aiConfig);
       config.projectName = projectName;
-      config.projectType = aiConfig.projectType || projectType;
+      config.projectType = projectType;
     } else {
       config = await applyManualPrompts(config, projectType);
     }
